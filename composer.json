@@ -176,6 +176,10 @@
         ]
     },
     "scripts": {
+        "build-assets": [
+            "@prepare-for-pantheon",
+            "composer install --optimize-autoloader --no-dev"
+        ],
         "post-install-cmd": [
             "@drupal-scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
