@@ -7,6 +7,10 @@
         "ymcatwincities/openy": "8.*.*",
         "composer/installers": "^1.2",
         "drupal-composer/drupal-scaffold": "^2.2",
+        "rvtraveller/qs-composer-installer": "^1.1",
+        "drush-ops/behat-drush-endpoint": "^0.0.5",
+        "pantheon-systems/quicksilver-pushback": "~1",
+        "drush/drush": "~8",
         "cweagans/composer-patches": "~1.0"
     },
     "require-dev": {
