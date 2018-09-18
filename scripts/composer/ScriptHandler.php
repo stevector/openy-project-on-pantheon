@@ -16,7 +16,7 @@ class ScriptHandler
 
   protected static function getDrupalRoot($project_root)
   {
-    return $project_root .  '/web';
+    return $project_root .  '/docroot';
   }
 
   public static function createRequiredFiles(Event $event)
