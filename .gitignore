@@ -32,6 +32,8 @@ docroot/sites/example.sites.php
 docroot/update.php
 docroot/web.config
 
+docroot/libraries/
+
 
 # Exclude hidden OS files.
 .DS_Store
