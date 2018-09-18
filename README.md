@@ -14,5 +14,5 @@ export CIRCLE_TOKEN=[REDACTED]
 Then run this command from the [Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin) for [Pantheon's Terminus command line tool](https://github.com/pantheon-systems/terminus).
 
 ```
-terminus build:project:create stevector/openy-project-on-pantheon/ openy-site-machine-name --team="My Pantheon Org"
+terminus build:project:create stevector/openy-project-on-pantheon/ openy-site-machine-name --team="My Pantheon Org" --stability=dev
 ```
