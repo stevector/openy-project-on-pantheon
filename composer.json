@@ -170,26 +170,37 @@
             }
         }
     ],
+    "autoload": {
+        "classmap": [
+            "scripts/composer/ScriptHandler.php"
+        ]
+    },
     "scripts": {
         "post-install-cmd": [
-            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-            "@cibox-build",
-            "@cibox-vm",
-            "@docksal",
-            "bash scripts/remove_vendor_git_folders.sh || :"
+            "@drupal-scaffold",
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
         ],
         "post-update-cmd": [
-            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-            "@cibox-build",
-            "@cibox-vm",
-            "@docksal",
-            "bash scripts/remove_vendor_git_folders.sh || :"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "find .circleci/scripts/pantheon/ -type f | xargs chmod 755",
+            "find tests/scripts/ -type f | xargs chmod 755"
         ],
+        "post-create-project-cmd": [
+            "@drupal-scaffold",
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ],
+        "prepare-for-pantheon": "DrupalProject\\composer\\ScriptHandler::prepareForPantheon",
         "cibox-build": "[ -d ./vendor/ymcatwincities/openy-cibox-build ] && (rsync -r --exclude=composer.json --exclude=.gitignore --exclude=.git ./vendor/ymcatwincities/openy-cibox-build/ ./docroot) || (rm -rf ./docroot/devops ./docroot/*.sh ./docroot/*.yml ./docroot/*.md ./docroot/ansible.cfg)",
         "cibox-vm": "[ -d ./vendor/ymcatwincities/openy-cibox-vm ] && (rsync -r --exclude=composer.json --exclude=README.md --exclude=.gitignore --exclude=.git --exclude=LICENSE ./vendor/ymcatwincities/openy-cibox-vm/ ./) || (rm -rf cibox provisioning Vagrantfile .vagrant backup cache)",
         "docksal": "[ -d ./vendor/ymcatwincities/openy-docksal ] && (rsync -r --exclude=composer.json --exclude=.git --exclude=README.md ./vendor/ymcatwincities/openy-docksal/ ./) || (rm -rf .docksal build.sh)"
     },
     "extra": {
+        "build-env": {
+            "install-cms": [
+                "drush site-install openy --account-mail={account-mail} --account-name={account-name} --account-pass={account-pass} --site-mail={site-mail} --site-name={site-name} --yes",
+            ],
+            "export-configuration": "drush config-export --yes"
+        },
         "installer-paths": {
             "docroot/core": ["type:drupal-core"],
             "docroot/libraries/{$name}": ["type:drupal-library"],
@@ -198,7 +209,22 @@
             "docroot/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
         },
-        "enable-patching": true
+        "enable-patching": true,
+        "drupal-scaffold": {
+            "source": "https://raw.githubusercontent.com/pantheon-systems/drops-8-scaffolding/{version}/{path}",
+            "includes": [
+                "sites/default/default.services.pantheon.preproduction.yml",
+                "sites/default/settings.pantheon.php"
+            ],
+            "excludes": [
+                ".csslintrc",
+                ".editorconfig",
+                ".eslintignore",
+                ".eslintrc.json",
+                ".htaccess",
+                "web.config"
+            ]
+        }
     },
     "config": {
         "bin-dir": "vendor/bin/",
